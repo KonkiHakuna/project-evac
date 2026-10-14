@@ -40,4 +40,11 @@ private:
 	sf::RectangleShape doctor;
 	sf::RectangleShape wizard;
 	sf::RectangleShape caveEntrance;
+
+	// Textures must exist as long as the shapes use them.
+	sf::Texture weaponShopTexture;
+	sf::Texture armoryTexture;
+	sf::Texture doctorTexture;
+	sf::Texture wizardTexture;
+	sf::Texture caveEntranceTexture;
 };

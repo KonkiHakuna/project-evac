@@ -5,9 +5,25 @@
 
 Lobby::Lobby(const sf::RenderWindow& window) {
 
+	// Defines the size of all lobby buildings.
+	const sf::Vector2f buildingSize(384.f, 384.f);
+
+	// Defines the distance between shops and window edges.
+	const float margin = 20.f;
+
+	// Stores the window dimensions.
+	const float windowWidth = static_cast<float>(window.getSize().x);
+	const float windowHeight = static_cast<float>(window.getSize().y);
+
 	// Configure the weapon shop area.
-	weaponShop.setSize(sf::Vector2f(256, 256));
-	weaponShop.setFillColor(sf::Color(211, 211, 211));
+	weaponShop.setSize(buildingSize);
+
+	// Load the weapon shop texture.
+	if (!weaponShopTexture.loadFromFile("assets/buildings/weaponShop.png")) {
+		throw std::runtime_error("Failed to load weapon shop texture");
+	}
+
+	weaponShop.setTexture(&weaponShopTexture);
 
 	// Center the origin so positioning is based on the middle of the shape.
 	weaponShop.setOrigin({
@@ -15,72 +31,95 @@ Lobby::Lobby(const sf::RenderWindow& window) {
 		static_cast<float>(weaponShop.getLocalBounds().size.y) / 2
 		});
 
+	// Positions the weapon shop near the bottom-left area.
 	weaponShop.setPosition({
-		static_cast<float>(window.getSize().x * 0.25),
-		static_cast<float>(window.getSize().y) - 125
+		windowWidth * 0.25f,
+		windowHeight - buildingSize.y / 2.f - margin
 		});
 
 
 	// Configure the armory area.
-	armory.setSize(sf::Vector2f(256, 256));
-	armory.setFillColor(sf::Color(111, 111, 111));
+	armory.setSize(buildingSize);
+
+	// Load the armory texture.
+	if (!armoryTexture.loadFromFile("assets/buildings/armory.png")) {
+		throw std::runtime_error("Failed to load armory texture");
+	}
+	armory.setTexture(&armoryTexture);
 
 	armory.setOrigin({
 		static_cast<float>(armory.getLocalBounds().size.x / 2),
 		static_cast<float>(armory.getLocalBounds().size.y) / 2
 		});
 
+	// Positions the armory near the bottom-right area.
 	armory.setPosition({
-		static_cast<float>(window.getSize().x * 0.75),
-		static_cast<float>(window.getSize().y) - 125
+		windowWidth * 0.75f,
+		windowHeight - buildingSize.y / 2.f - margin
 		});
 
 
 	// Configure the doctor area.
-	doctor.setSize(sf::Vector2f(256, 256));
-	doctor.setFillColor(sf::Color::White);
+	doctor.setSize(buildingSize);
+	
+	// Load the doctor texture.
+	if (!doctorTexture.loadFromFile("assets/buildings/doctor.png")) {
+		throw std::runtime_error("Failed to load doctor texture");
+	}
+	doctor.setTexture(&doctorTexture);
 
 	doctor.setOrigin({
 		static_cast<float>(doctor.getLocalBounds().size.x / 2),
 		static_cast<float>(doctor.getLocalBounds().size.y) / 2
 		});
 
+	// Positions the doctor near the right edge.
 	doctor.setPosition({
-		static_cast<float>(window.getSize().x) - 125,
-		static_cast<float>(window.getSize().y / 2)
+		windowWidth - buildingSize.x / 2.f - margin,
+		windowHeight / 2.f
 		});
 
 
 	// Configure the wizard area.
-	wizard.setSize(sf::Vector2f(256, 256));
-	wizard.setFillColor(sf::Color(110, 130, 255));
+	wizard.setSize(buildingSize);
+	
+	// Load the wizard texture.
+	if (!wizardTexture.loadFromFile("assets/buildings/wizard.png")) {
+		throw std::runtime_error("Failed to load wizard texture");
+	}
+	wizard.setTexture(&wizardTexture);
 
 	wizard.setOrigin({
-		static_cast<float>(wizard.getLocalBounds().size.x / 2) - 125,
+		static_cast<float>(wizard.getLocalBounds().size.x / 2),
 		static_cast<float>(wizard.getLocalBounds().size.y) / 2
 		});
 
+	// Positions the wizard near the left edge.
 	wizard.setPosition({
-		0,
-		static_cast<float>(window.getSize().y / 2)
+		buildingSize.x / 2.f + margin,
+		windowHeight / 2.f
 		});
 
-
 	// Configure the cave entrance.
-	caveEntrance.setSize(sf::Vector2f(256, 256));
-	caveEntrance.setFillColor(sf::Color::Magenta);
+	caveEntrance.setSize(buildingSize);
+
+	// Load the cave entrance texture.
+	if (!caveEntranceTexture.loadFromFile("assets/buildings/caveEntrance.png")) {
+		throw std::runtime_error("Failed to load cave entrance texture");
+	}
+	caveEntrance.setTexture(&caveEntranceTexture);
 
 	caveEntrance.setOrigin({
 		static_cast<float>(caveEntrance.getLocalBounds().size.x / 2),
 		static_cast<float>(caveEntrance.getLocalBounds().size.y) / 2
 		});
 
+	// Positions the cave entrance near the top edge.
 	caveEntrance.setPosition({
-		static_cast<float>(window.getSize().x / 2),
-		125
+		windowWidth / 2.f,
+		buildingSize.y / 2.f + margin
 		});
-}
-
+	}
 
 void Lobby::draw(sf::RenderWindow& window) const {
 
