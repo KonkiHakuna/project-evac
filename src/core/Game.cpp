@@ -6,6 +6,8 @@
 #include "ui/PauseMenu.h"
 #include "ui/hud.h"
 #include "ui/InventoryUI.h"
+#include <algorithm>
+#include <random>
 
 Game::Game() : window(sf::VideoMode(sf::Vector2u{2880,1920}), "Evac", sf::Style::Default, sf::State::Fullscreen){
 	
@@ -475,18 +477,15 @@ void Game::run() {
 					for (int g : groupOrder)
 					{
 
-						// Inside each collision group, process enemies
-						// closest to the player first.
-						std::ranges::sort(groups[g], [&](int a, int b) {
+						// Process enemies within each collision group from nearest to farthest.
+						// Randomize the processing order when enemies are equally distant.
+						static std::mt19937 rng{ std::random_device{}() };
+
+						std::shuffle(groups[g].begin(), groups[g].end(), rng);
+
+						std::ranges::stable_sort(groups[g], [&](int a, int b) {
 							float da = distanceToPlayer(enemies[a]->getPosition(), playerPos);
 							float db = distanceToPlayer(enemies[b]->getPosition(), playerPos);
-
-							// Randomize the order when both enemies
-							// are exactly the same distance from the player.
-							if (da == db)
-							{
-								return std::rand() % 2 == 0;
-							}
 
 							return da < db;
 							});
